@@ -17,8 +17,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/projects', 'ProjectsController@index');
-Route::get('/projects/{project}', 'ProjectsController@show');
-Route::post('/projects', 'ProjectsController@store');
+//Route::get('/dashboard', function () {
+//    return view('dashboard');
+//})->middleware(['auth'])->name('dashboard');
 
+Route::group(['middleware' => 'auth'], function(){
+    Route::get('/projects', 'ProjectsController@index')->middleware('auth');
+    Route::get('/projects/{project}', 'ProjectsController@show')->middleware('auth');
+    Route::post('/projects', 'ProjectsController@store')->middleware('auth');
+});
 
+require __DIR__.'/auth.php';
